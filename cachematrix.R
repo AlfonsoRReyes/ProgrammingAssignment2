@@ -1,7 +1,53 @@
-## Put comments here that give an overall description of what your
-## functions do
-## Write a short comment describing this function
+## Function to calculate the inverse of a matrix and cache previous calculation.
+## makeCacheMatrix: creates the environment to cache the calculation of the inverse
+## cacheSolve: calculates the inverse of a matrix if it is a new calculation, otherwise
+##            uses the cached calculation.
+##########################################
 
+makeCacheMatrix <- function(x = matrix()) {
+  # This function creates a special "matrix" object that can cache its inverse
+  
+  m <- NULL
+  # set the value of the matrix
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  # get the value of the matrix
+  get <- function() x  
+  # set the value of the inverse
+  setinverse <- function(inverse) m <<- inverse
+  # get the value of the inverse
+  getinverse <- function() m
+  list(set = set, get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)
+}
+
+
+cacheSolve <- function(x, ...) {
+  # Return a matrix that is the inverse of 'x'
+  # This function computes the inverse of the special "matrix" returned 
+  # by makeCacheMatrix above. If the inverse has already been calculated 
+  # (and the matrix has not changed), then the cachesolve should retrieve 
+  # the inverse from the cache.
+  i <- x$getinverse()               # get the inverse if it is cached
+  if(!is.null(i)) {                 # if matrix inverse var not empty
+    message("getting cached data")
+    return(i)                       # return cached value
+  }                                 # otherwise,
+  data <- x$get()                   # get the new matrix
+  i <- solve(data, ...)             # calculate its inverse
+  x$setinverse(i)                   # set the inverse
+  i                                 # return calculated value
+}
+
+
+
+
+
+
+# old functions used as a template
 makeVector <- function(x = numeric()) {
   # copied from the README.md
   # The first function, makeVector creates a special “vector”, which is really 
@@ -42,40 +88,4 @@ cachemean <- function(x, ...) {
 }
 
 
-makeCacheMatrix <- function(x = matrix()) {
-  # This function creates a special "matrix" object that can cache its inverse
 
-  m <- NULL
-  # set the value of the vector
-  set <- function(y) {
-    x <<- y
-    m <<- NULL
-  }
-  # get the value of the matrix
-  get <- function() x  
-  # set the value of the mean
-  setinverse <- function(inverse) m <<- inverse
-  # get the value of the inverse
-  getinverse <- function() m
-  list(set = set, get = get,
-       setinverse = setinverse,
-       getinverse = getinverse)
-}
-
-
-cacheSolve <- function(x, ...) {
-  # Return a matrix that is the inverse of 'x'
-  # This function computes the inverse of the special "matrix" returned 
-  # by makeCacheMatrix above. If the inverse has already been calculated 
-  # (and the matrix has not changed), then the cachesolve should retrieve 
-  # the inverse from the cache.
-  i <- x$getinverse()               # get the inverse if it cached
-  if(!is.null(i)) {                 # if matrix not empty
-    message("getting cached data")
-    return(i)                       # return cached value
-  }
-  data <- x$get()                   # get matrix
-  i <- solve(data, ...)             # calculate the inverse
-  x$setinverse(i)                   # set the inverse
-  i                                 # return calculated value
-}

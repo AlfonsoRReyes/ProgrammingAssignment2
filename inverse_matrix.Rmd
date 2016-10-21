@@ -26,8 +26,14 @@ Inverse of the matrix `m`:
 cm <- makeCacheMatrix(m)
 cacheSolve(cm)
 cacheSolve(cm)
+
+```
+
+Solve again:
+```{r}
 cacheSolve(cm)
 ```
+
 
 Inverse of the square matrix:
 ```{r}
