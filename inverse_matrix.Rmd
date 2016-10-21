@@ -1,0 +1,43 @@
+---
+title: "inverse matrix"
+author: "alfonso reyes"
+date: "10/21/2016"
+output: html_document
+---
+Load functions.
+initialize test matrices
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment=NA, message = TRUE)
+```
+```{r}
+source("cachematrix.R")
+m = rbind(c(1, -1/4), c(-1/4, 1)) 
+square.matrix <- matrix(c(1,0,3,2,2,4,3,2,1),ncol=3)
+```
+
+Show the test matrices:
+```{r}
+m
+square.matrix
+```
+
+Inverse of the matrix `m`:
+```{r}
+cm <- makeCacheMatrix(m)
+cacheSolve(cm)
+cacheSolve(cm)
+cacheSolve(cm)
+```
+
+Inverse of the square matrix:
+```{r}
+cache.square.matrix <- makeCacheMatrix(square.matrix)
+cacheSolve(cache.square.matrix)
+```
+
+Inverse of the square matrix (cached):
+```{r}
+cacheSolve(cache.square.matrix)
+```
+
+

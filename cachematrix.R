@@ -1,25 +1,23 @@
 ## Put comments here that give an overall description of what your
 ## functions do
-
 ## Write a short comment describing this function
 
 makeVector <- function(x = numeric()) {
+  # copied from the README.md
   # The first function, makeVector creates a special “vector”, which is really 
   # a list containing a function to:
   
-  # set the value of the vector
-  # get the value of the vector
-  # set the value of the mean
-  # get the value of the mean
-  # copied from the README.md
-  
   m <- NULL
+  # set the value of the vector
   set <- function(y) {
     x <<- y
     m <<- NULL
   }
+  # get the value of the vector
   get <- function() x
+  # set the value of the mean
   setmean <- function(mean) m <<- mean
+  # get the value of the mean
   getmean <- function() m
   list(set = set, get = get,
        setmean = setmean,
@@ -47,15 +45,37 @@ cachemean <- function(x, ...) {
 makeCacheMatrix <- function(x = matrix()) {
   # This function creates a special "matrix" object that can cache its inverse
 
+  m <- NULL
+  # set the value of the vector
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  # get the value of the matrix
+  get <- function() x  
+  # set the value of the mean
+  setinverse <- function(inverse) m <<- inverse
+  # get the value of the inverse
+  getinverse <- function() m
+  list(set = set, get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
-
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  # Return a matrix that is the inverse of 'x'
   # This function computes the inverse of the special "matrix" returned 
   # by makeCacheMatrix above. If the inverse has already been calculated 
   # (and the matrix has not changed), then the cachesolve should retrieve 
   # the inverse from the cache.
+  i <- x$getinverse()               # get the inverse if it cached
+  if(!is.null(i)) {                 # if matrix not empty
+    message("getting cached data")
+    return(i)                       # return cached value
+  }
+  data <- x$get()                   # get matrix
+  i <- solve(data, ...)             # calculate the inverse
+  x$setinverse(i)                   # set the inverse
+  i                                 # return calculated value
 }
